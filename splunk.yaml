@@ -1,0 +1,18 @@
+#cloud-config
+package_update: true
+package_upgrade: true
+packages:
+  - wget
+  - tar
+
+
+
+runcmd:
+   - useradd splunk
+   - wget -O splunk-9.2.1-78803f08aabb-Linux-x86_64.tgz 'https://download.splunk.com/products/splunk/releases/9.2.1/linux/splunk-9.2.1-78803f08aabb-Linux-x86_64.tgz'
+   - tar -xvf splunk-9.2.1-78803f08aabb-Linux-x86_64.tgz -C /opt
+   - chown -R splunk:splunk /opt/splunk
+   - sudo -u splunk /opt/splunk/bin/splunk start --accept-license --answer-yes --no-prompt --seed-passwd password
+   - sudo /opt/splunk/bin/splunk enable boot-start -user splunk
+
+final_message: "Splunk installation completed and running as the 'splunk' user."
